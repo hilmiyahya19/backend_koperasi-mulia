@@ -33,9 +33,9 @@ app.use('/api/sale', saleRoutes);
 app.use('/api/finance', financeRoutes);
 app.use('/api/report', reportRoutes);
 // landing page
-app.use('/api/activities', activityRoutes);
-app.use('/api/articles', articleRoutes);
-app.use('/api/promotions', promotionRoutes);
+app.use('/api/activity', activityRoutes);
+app.use('/api/article', articleRoutes);
+app.use('/api/promotion', promotionRoutes);
 
 // Error Handling
 app.use((err, req, res, next) => {
