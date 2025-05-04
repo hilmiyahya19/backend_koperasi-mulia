@@ -43,6 +43,10 @@ app.use((err, req, res, next) => {
     res.status(500).send({ message: 'Something went wrong!' });
 });
 
+app.get('/', (req, res) => {
+    res.send('Koperasi API is running successfully!');
+});  
+
 // Start Server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
