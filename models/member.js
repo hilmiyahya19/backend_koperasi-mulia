@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const memberSchema = new mongoose.Schema(
     {
         fullName: { type: String, required: true, unique: true, trim: true },
-        email: { type: String, required: true, trim: true },
+        email: { type: String, required: true, unique: true, trim: true },
         username: { type: String, required: true, unique: true, trim: true },
         password: { type: String, required: true }, // Password akan di-hash sebelum disimpan
         phone: { type: String, required: true, trim: true },

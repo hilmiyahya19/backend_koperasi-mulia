@@ -6,14 +6,19 @@ exports.register = async (req, res) => {
     try {
         const { fullName, email, username, password, phone } = req.body;
 
-        const existingUser = await Member.findOne({ $or: [{ email }, { username }] });
-        if (existingUser) return res.status(400).json({ message: 'Email atau username sudah digunakan' });
+        const existingUser = await Member.findOne({ $or: [{ fullName }, { email }, { username }] });
+        if (existingUser) return res.status(400).json({ message: 'Nama, email, atau username sudah digunakan' });
 
         const newMember = new Member({ fullName, email, username, password, phone });
         await newMember.save();
 
         res.status(201).json({ message: 'Registrasi berhasil, menunggu persetujuan admin' });
     } catch (error) {
+        // Tangani duplikat key (E11000)
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyPattern)[0];
+            return res.status(400).json({ message: `${field} sudah digunakan` });
+        }
         res.status(500).json({ message: 'Gagal mendaftar', error });
     }
 };
