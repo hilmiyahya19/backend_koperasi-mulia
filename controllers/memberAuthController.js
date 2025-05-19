@@ -19,7 +19,12 @@ exports.register = async (req, res) => {
             const field = Object.keys(error.keyPattern)[0];
             return res.status(400).json({ message: `${field} sudah digunakan` });
         }
-        res.status(500).json({ message: 'Gagal mendaftar', error });
+        // res.status(500).json({ message: 'Gagal mendaftar', error });
+        res.status(500).json({ 
+            message: 'Gagal mendaftar', 
+            error: error.message, 
+            errorDetails: error
+        });
     }
 };
 
