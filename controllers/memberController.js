@@ -46,17 +46,22 @@ exports.createMember = async (req, res) => {
     try {
         // Cek apakah fullName atau username sudah ada
         const existingMember = await Member.findOne({ 
-            $or: [{ fullName }, { username }] 
+            $or: [{ fullName }, { username }, { email }] 
         });
 
         if (existingMember) {
-            return res.status(400).json({ message: "Full name atau Username sudah digunakan" });
+            return res.status(400).json({ message: "Full name, Username, atau Email sudah digunakan" });
         }
 
         const member = new Member({ fullName, email, username, password, phone, status });
         const savedMember = await member.save();
         res.status(201).json(savedMember);
     } catch (error) {
+        // Tambahkan handler error kode MongoDB
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyPattern)[0];
+            return res.status(400).json({ message: `${field} sudah digunakan` });
+        }        
         res.status(500).json({ message: 'Gagal menambah anggota', error: error.message });
     }
 };
@@ -102,4 +107,3 @@ exports.deleteMember = async (req, res) => {
         res.status(500).json({ message: 'Gagal menghapus anggota', error: error.message });
     }
 };
-
